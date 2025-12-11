@@ -47,4 +47,82 @@ public class IdentifierTest {
     public void deveRejeitarIdentificadorComCaracteresEspeciais() {
         assertFalse(identifier.validateIdentifier("A@b"));
     }
+
+    // Testa condição: id == null (true)
+    @Test
+    public void deveRejeitarIdentificadorNulo() {
+        assertFalse(identifier.validateIdentifier(null));
+    }
+
+    // Testa condição: id.isEmpty() (true)
+    @Test
+    public void deveRejeitarIdentificadorVazio() {
+        assertFalse(identifier.validateIdentifier(""));
+    }
+
+    // Testa condição: id.length() <= 6 - comprimento válido máximo
+    @Test
+    public void deveAceitarIdentificadorCom6Caracteres() {
+        assertTrue(identifier.validateIdentifier("Abcdef")); // 6 caracteres
+    }
+
+    // Testa condição: !Character.isLetter(firstChar) - começa com caractere especial
+    @Test
+    public void deveRejeitarIdentificadorQueComeçaComCaractereEspecial() {
+        assertFalse(identifier.validateIdentifier("@abc"));
+    }
+
+    // Testa condição: Character.isLetter(firstChar) - começa com letra minúscula
+    @Test
+    public void deveAceitarIdentificadorQueComeçaComLetraMinuscula() {
+        assertTrue(identifier.validateIdentifier("abc"));
+    }
+
+    // Testa condição: Character.isLetter(firstChar) - começa com letra maiúscula
+    @Test
+    public void deveAceitarIdentificadorQueComeçaComLetraMaiuscula() {
+        assertTrue(identifier.validateIdentifier("Abc"));
+    }
+
+    // Testa condição: !Character.isLetterOrDigit(c) - caractere especial no final
+    @Test
+    public void deveRejeitarIdentificadorComCaractereEspecialNoFinal() {
+        assertFalse(identifier.validateIdentifier("Ab@"));
+    }
+
+    // Testa condição: !Character.isLetterOrDigit(c) - espaço no identificador
+    @Test
+    public void deveRejeitarIdentificadorComEspaco() {
+        assertFalse(identifier.validateIdentifier("A b"));
+    }
+
+    // Testa condição: Character.isLetterOrDigit(c) - apenas letras
+    @Test
+    public void deveAceitarIdentificadorApenasComLetras() {
+        assertTrue(identifier.validateIdentifier("AbcDef"));
+    }
+
+    // Testa condição: Character.isLetterOrDigit(c) - apenas dígitos após primeira letra
+    @Test
+    public void deveAceitarIdentificadorComDigitosAposLetra() {
+        assertTrue(identifier.validateIdentifier("A12345"));
+    }
+
+    // Exatamente no limite inferior de comprimento
+    @Test
+    public void deveAceitarIdentificadorComprimentoLimiteInferior() {
+        assertTrue(identifier.validateIdentifier("X")); // 1 caractere
+    }
+
+    // Exatamente no limite superior de comprimento
+    @Test
+    public void deveAceitarIdentificadorComprimentoLimiteSuperior() {
+        assertTrue(identifier.validateIdentifier("X12345")); // 6 caracteres
+    }
+
+    // Logo acima do limite superior de comprimento
+    @Test
+    public void deveRejeitarIdentificadorLogoAcimaDoLimite() {
+        assertFalse(identifier.validateIdentifier("X123456")); // 7 caracteres
+    }
 }
